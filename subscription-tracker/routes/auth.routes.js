@@ -13,4 +13,4 @@ authRouter.post("/sign-out", (req, res) => {
 });
 
 
-export default authRouter
+export default authRouter;
