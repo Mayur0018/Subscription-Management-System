@@ -8,7 +8,7 @@ export const signUp = async (req, res, next) => {
   session.startTransaction();
   try {
     const { name, email, password } = req.body;
-    const existingUser = await User.findById({ email });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       const error = new Error("User alrady exists");
       error.statusCode = 409;

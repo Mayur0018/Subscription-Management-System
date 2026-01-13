@@ -1,35 +1,33 @@
 const errorMiddleware = (err, req, res, next) => {
-  try {
-    let error = { ...err };
-    error.mesaage = err.mesaage;
-    console.error(err);
+  console.error(err);
 
-    //   Mongoose bad  ObjectId
-    if (err.name === "CastError") {
-      const message = "Resource Not Found";
-      error = new Error(message);
-      error.statusCode = 404;
-    }
+  let statusCode = err.statusCode || 500;
+  let message = err.message || "Server Error";
 
-    // Mongoose duplicate id
-    if ((err.code = 11000)) {
-      const mesaage = "Duplicate Filed Value enterd";
-      error = new Error(mesaage);
-      error.statusCode = 400;
-    }
-
-    // Mongoose validation error
-    if (err.name === "ValidationError") {
-      const mesaage = Object.values(err.error).map((val) => val.mesaage);
-      error = new Error(mesaage.join(", "));
-      error.statusCode = 400;
-    }
-
-    res.status(error.statusCode || 500);
-  } catch (error) {
-    next(error);
+  // Mongoose bad ObjectId
+  if (err.name === "CastError") {
+    statusCode = 404;
+    message = "Resource not found";
   }
-};
 
+  // Mongoose duplicate key
+  if (err.code === 11000) {
+    statusCode = 400;
+    message = "Duplicate field value entered";
+  }
+
+  // Mongoose validation error
+  if (err.name === "ValidationError") {
+    statusCode = 400;
+    message = Object.values(err.errors)
+      .map((val) => val.message)
+      .join(", ");
+  }
+
+  res.status(statusCode).json({
+    success: false,
+    message,
+  });
+};
 
 export default errorMiddleware;
