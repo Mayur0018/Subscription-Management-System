@@ -40,7 +40,7 @@ export const signUp = async (req, res, next) => {
     next(error);
   }
 };
-export const signIn = async (req, res) => {
+export const signIn = async (req, res,next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
