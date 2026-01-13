@@ -11,8 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/api/v1/auth", authRouter);
-app.use("/app/v1/users", userRouter);
-app.use("/app/v1/subscription", subscritionRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/subscription", subscritionRouter);
 app.use(errorMiddleware);
 app.get("/", (req, res) => {
   res.send("WelCome To The Subscriton");
