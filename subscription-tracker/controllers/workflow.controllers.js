@@ -21,8 +21,13 @@ export const sendReminders = serve(async () => {
   for (const daysBefore of REMINDERS) {
     const remiderDate = renewalsDate.subtract(daysBefore, "day");
     if (remiderDate.isAfter(dayjs())) {
-        await sleepUnitReminder(context,`Reminder ${daysBefore} days before`,remiderDate)
+      await sleepUnitReminder(
+        context,
+        `Reminder ${daysBefore} days before`,
+        remiderDate,
+      );
     }
+    await trigggerReminder(context, `Remainder ${daysBefore} days before`);
   }
 });
 
@@ -40,6 +45,5 @@ const sleepUnitReminder = async (context, label, date) => {
 const trigggerReminder = async (context, label) => {
   return await context.run(label, () => {
     console.log(`Triggering ${label} reminder`);
-
   });
 };
